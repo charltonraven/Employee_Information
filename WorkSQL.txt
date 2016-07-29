@@ -1,0 +1,10 @@
+Create Table employeeinformation (
+EmployeeFirstName varchar(15),
+EmployeeLastName varchar(15) NOT NULL,
+SerialNumbers varchar(60) NOT NULL,
+PhoneNumber varchar(12) NULL,
+OldPCName varchar(15) NULL,
+NewPCName varchar(15) NOT NULL,
+Date date,
+Primary Key(EmployeeFirstName,EmployeeLastName)
+);
