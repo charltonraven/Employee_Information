@@ -5,6 +5,7 @@ SerialNumbers varchar(60) NOT NULL,
 PhoneNumber varchar(12) NULL,
 OldPCName varchar(15) NULL,
 NewPCName varchar(15) NOT NULL,
+Notes varchar(200) NULL,
 Date date,
 Primary Key(EmployeeFirstName,EmployeeLastName)
 );
