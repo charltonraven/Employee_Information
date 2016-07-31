@@ -1,86 +1,121 @@
 package Sonoco;
 
+import javafx.beans.property.SimpleStringProperty;
+
 public class Employee {
 
-	private String EmployeeFirstName;
-	private String EmployeeLastName;
-	private String SerialNumbers;
-	private String Phone;
-	private String OldPCName;
-	private String NewPCName;
-	private String Notes;
-	private String Date;
+	private SimpleStringProperty EmployeeFirstName;
+	private SimpleStringProperty EmployeeLastName;
+	private SimpleStringProperty SerialNumbers;
+	private SimpleStringProperty Phone;
+	private SimpleStringProperty OldPCName;
+	private SimpleStringProperty NewPCName;
+	private SimpleStringProperty Notes;
+	private SimpleStringProperty Date;
 	
 	
 	Employee(){
-		this.EmployeeFirstName="";
-		this.EmployeeLastName="";
-		this.SerialNumbers="";
-		this.Phone="";
-		this.OldPCName="";
-		this.NewPCName="";
-		this.Notes="";
-		this.Date="";
+		this.EmployeeFirstName=new SimpleStringProperty();
+		this.EmployeeLastName=new SimpleStringProperty();
+		this.SerialNumbers=new SimpleStringProperty();
+		this.Phone=new SimpleStringProperty();
+		this.OldPCName=new SimpleStringProperty();
+		this.NewPCName=new SimpleStringProperty();
+		this.Notes=new SimpleStringProperty();
+		this.Date=new SimpleStringProperty();
 		
 	}
 	
 	
-	Employee(String first,String last,String serials,String phone,String oldPc,String newPc,String notes,String date){
-		this.EmployeeFirstName=first;
-		this.EmployeeLastName=last;
-		this.SerialNumbers=serials;
-		this.Phone=phone;
-		this.OldPCName=oldPc;
-		this.NewPCName=newPc;
-		this.Notes=notes;
-		this.Date=date;
+	Employee(String first,String last,String phone,String serials,String oldPc,String newPc,String notes,String date){
+		this.EmployeeFirstName=new SimpleStringProperty(first);
+		this.EmployeeLastName=new SimpleStringProperty(last);
+		this.SerialNumbers=new SimpleStringProperty(serials);
+		this.Phone=new SimpleStringProperty(phone);
+		this.OldPCName=new SimpleStringProperty(oldPc);
+		this.NewPCName=new SimpleStringProperty(newPc);
+		this.Notes=new SimpleStringProperty(notes);
+		this.Date=new SimpleStringProperty(date);
 	}
+
+
 	public String getEmployeeFirstName() {
-		return EmployeeFirstName;
+		return EmployeeFirstName.get();
 	}
+
+
 	public String getEmployeeLastName() {
-		return EmployeeLastName;
+		return EmployeeLastName.get();
 	}
+
+
 	public String getSerialNumbers() {
-		return SerialNumbers;
+		return SerialNumbers.get();
 	}
+
+
 	public String getPhone() {
-		return Phone;
+		return Phone.get();
 	}
+
+
 	public String getOldPCName() {
-		return OldPCName;
+		return OldPCName.get();
 	}
+
+
 	public String getNewPCName() {
-		return NewPCName;
+		return NewPCName.get();
 	}
+
+
 	public String getNotes() {
-		return Notes;
+		return Notes.get();
 	}
+
+
 	public String getDate() {
-		return Date;
+		return Date.get();
 	}
+
+
 	public void setEmployeeFirstName(String employeeFirstName) {
-		EmployeeFirstName = employeeFirstName;
+		EmployeeFirstName.set(employeeFirstName);
 	}
+
+
 	public void setEmployeeLastName(String employeeLastName) {
-		EmployeeLastName = employeeLastName;
+		EmployeeLastName.set(employeeLastName);
 	}
+
+
 	public void setSerialNumbers(String serialNumbers) {
-		SerialNumbers = serialNumbers;
+		SerialNumbers.set(serialNumbers);
 	}
+
+
 	public void setPhone(String phone) {
-		Phone = phone;
+		Phone.set(phone);
 	}
+
+
 	public void setOldPCName(String oldPCName) {
-		OldPCName = oldPCName;
+		OldPCName.set(oldPCName);;
 	}
+
+
 	public void setNewPCName(String newPCName) {
-		this.NewPCName = newPCName;
+		NewPCName.set(newPCName);;
 	}
+
+
 	public void setNotes(String notes) {
-		Notes = notes;
+		Notes.set(notes);;
 	}
+
+
 	public void setDate(String date) {
-		Date = date;
+		Date.set(date);;
 	}
+	
 }

@@ -26,4 +26,5 @@
 <fullyQualifiedTypeName name="java.sql.ResultSet"/>
 <fullyQualifiedTypeName name="com.mysql.jdbc.Statement"/>
 <fullyQualifiedTypeName name="javafx.collections.FXCollections"/>
+<fullyQualifiedTypeName name="javafx.beans.property.SimpleStringProperty"/>
 </qualifiedTypeNameHistroy>

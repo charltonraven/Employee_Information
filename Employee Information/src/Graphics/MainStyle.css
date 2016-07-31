@@ -1,0 +1,23 @@
+.root{
+    -fx-background-color: #86c1b9;
+    -fx-font-size:12pt;
+
+}
+.label{
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 16pt;
+}
+.button{
+    -fx-font-size: 16pt;
+}
+
+
+
+#TableButtons{
+    -fx-border-width: 2px;
+    -fx-border-radius: 15px ;
+    -fx-border-color: black;
+}
+
+
