@@ -15,14 +15,7 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TabPane;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 import javafx.scene.effect.DropShadow;
@@ -75,21 +68,23 @@ public class MainWindow extends Application implements EventHandler<ActionEvent>
 
     @SuppressWarnings("unchecked")
     @Override
-    public void start(Stage PrimaryStage) throws SQLException,Exception {
+    public void start(Stage PrimaryStage) throws Exception {
 
         window = PrimaryStage;
+        window.setTitle("Keep Track of Employee Information");
+        window.getIcons().add(new Image("Graphics/images/Sonoco.ico"));
         // Buttons
         btnSubmit = new Button("Submit");
         Button btnCancel = new Button("Cancel");
 
 
         // Labels
-        Label lblFirstName = new Label("First Name");
-        Label lblLastName = new Label("Last Name");
-        Label lblSerialNumbers = new Label("Serial Number(s)");
+        Label lblFirstName = new Label("First Name*");
+        Label lblLastName = new Label("Last Name*");
+        Label lblSerialNumbers = new Label("Serial Number(s)*");
         Label lblPhoneNumber = new Label("Phone Number(s)");
         Label lblOldPCName = new Label("Old PC Name");
-        Label lblNewPCName = new Label("New PC Name");
+        Label lblNewPCName = new Label("New PC Name*");
         Label lblNotes = new Label("Notes (if Any)");
 
         // Textbox
@@ -199,6 +194,7 @@ public class MainWindow extends Application implements EventHandler<ActionEvent>
         btnEdit = new Button();
         btnEdit.setGraphic(new ImageView(imgEdit));
         btnEdit.setId("TableButtons");
+        btnEdit.setOnAction(this);
         //Delete Button
         Image imgDelete = new Image("Graphics/Images/delete.png");
         btnDelete = new Button();
@@ -269,11 +265,13 @@ public class MainWindow extends Application implements EventHandler<ActionEvent>
         Banner.setText("Employee Bill Information");
         Banner.setFont(Font.font(null, FontWeight.BOLD, 40));
 
+        //YESSir Masta
+        // EmployeeTable.setOnMouseClicked();
 
 
         BorderPane border = new BorderPane();
         border.setPadding(new Insets(20, 20, 20, 20));
-        border.setAlignment(Banner,Pos.CENTER);
+        BorderPane.setAlignment(Banner, Pos.CENTER);
 
 
         border.setTop(Banner);
@@ -292,7 +290,7 @@ public class MainWindow extends Application implements EventHandler<ActionEvent>
     @Override
     public void handle(ActionEvent event) {
         if (event.getSource() == btnAdd) {
-            AddButtonClicked();
+            clearFields();
 
         }
         if (event.getSource() == btnSubmit) {
@@ -318,13 +316,14 @@ public class MainWindow extends Application implements EventHandler<ActionEvent>
             txtNewPCName.clear();
             txtaPhoneNumber.clear();
 
-
+        }
+        if (event.getSource() == btnEdit) {
 
 
         }
     }
 
-    public void AddButtonClicked() {
+    public void clearFields() {
         txtFirstName.setText("Enter new information");
         txtOldPCName.clear();
         txtLastName.clear();

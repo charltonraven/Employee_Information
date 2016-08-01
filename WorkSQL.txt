@@ -7,7 +7,7 @@ OldPCName varchar(15) NULL,
 NewPCName varchar(15) NOT NULL,
 Notes varchar(200) NULL,
 Date date,
-Primary Key(EmployeeFirstName,EmployeeLastName)
+Primary Key(EmployeeLastName,SerialNumbers)
 );
 INSERT INTO employeeinformation VALUES
 ('Charlton','Williams','843-337-5636','2UA4251K5D','testNameOld','testNameNew','test notes blah blah blah blah','2015-08-30');
