@@ -1,0 +1,11 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="Employee Information:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/Employee_Information_jar</output-path>
+    <root id="archive" name="Employee Information.jar">
+      <element id="module-output" name="Employee Information" />
+      <element id="extracted-dir" path="C:/Program Files/Java/jdk1.8.0_91/jre/lib/javax.mail.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="C:/Program Files/Java/jdk1.7.0_79/jre/lib/mysql-connector-java-5.1.39/mysql-connector-java-5.1.39-bin.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="C:/Program Files/Java/jdk1.7.0_79/jre/lib/jfxrt.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>

@@ -21,7 +21,7 @@ public class DBConnector {
     }
 
     public Connection getConn() {
-        String url = "jdbc:mysql://localhost:3306/employeeinfo";
+        String url = "jdbc:mysql://oldbrainbox:3306/employeeinfo";
         String user = "root";
         String password = "Raven47946$";
 
@@ -42,7 +42,7 @@ public class DBConnector {
     }
 
     public Connection getConnection() {
-        String url = "jdbc:mysql://localhost:3306/employeeinfo";
+        String url = "jdbc:mysql://oldbrainbox:3306/employeeinfo";
         String user = "root";
         String password = "Raven47946$";
 

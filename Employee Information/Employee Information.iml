@@ -8,8 +8,8 @@
     </content>
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="inheritedJdk" />
-    <orderEntry type="library" name="JavaFx" level="project" />
-    <orderEntry type="library" name="JavaMail" level="project" />
-    <orderEntry type="library" name="JavaMySQL" level="project" />
+    <orderEntry type="library" exported="" name="JavaFx" level="project" />
+    <orderEntry type="library" exported="" name="JavaMail" level="project" />
+    <orderEntry type="library" exported="" name="JavaMySQL" level="project" />
   </component>
 </module>
