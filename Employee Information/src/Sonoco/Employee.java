@@ -37,6 +37,17 @@ public class Employee {
 		this.Notes=new SimpleStringProperty(notes);
 		this.Date=new SimpleStringProperty(date);
 	}
+	Employee(String first,String last,String phone,String serials,String oldPc,String newPc,String notes){
+		this.EmployeeFirstName=new SimpleStringProperty(first);
+		this.EmployeeLastName=new SimpleStringProperty(last);
+		this.SerialNumbers=new SimpleStringProperty(serials);
+		this.Phone=new SimpleStringProperty(phone);
+		this.OldPCName=new SimpleStringProperty(oldPc);
+		this.NewPCName=new SimpleStringProperty(newPc);
+		this.Notes=new SimpleStringProperty(notes);
+
+	}
+
 
 
 	public String getEmployeeFirstName() {

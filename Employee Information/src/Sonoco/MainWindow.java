@@ -9,7 +9,10 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -21,6 +24,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -57,7 +61,15 @@ public class MainWindow extends Application implements EventHandler<ActionEvent>
     Button btnSubmit;
     Button btnSearch;
 
+    //used only for editing
+    Employee employee;
+
+    //HBox
     HBox hbSubmitCancel;
+    HBox hbEditCancel;
+
+    //Edit or Add Submit Button
+    String EorA = "";
 
     Connection conn;
 
@@ -127,7 +139,7 @@ public class MainWindow extends Application implements EventHandler<ActionEvent>
 
         //For Right Side of Border
         Label lblSearch = new Label("Search");
-        TextField txtSearch = new TextField();
+        final TextField txtSearch = new TextField();
 
         //Table start--------------------------------------------------------------------------------------
         //FirstName Column
@@ -176,9 +188,9 @@ public class MainWindow extends Application implements EventHandler<ActionEvent>
         EmployeeTable.setMaxSize(400, 500);
         EmployeeTable.setMinSize(200, 500);
 
+
         //Submit Button
         btnSubmit.setOnAction(this);
-
 
 
         //ADD Edit Delete Image Buttons
@@ -195,6 +207,7 @@ public class MainWindow extends Application implements EventHandler<ActionEvent>
         btnEdit.setGraphic(new ImageView(imgEdit));
         btnEdit.setId("TableButtons");
         btnEdit.setOnAction(this);
+        btnEdit.setDisable(true);
         //Delete Button
         Image imgDelete = new Image("Graphics/Images/delete.png");
         btnDelete = new Button();
@@ -206,16 +219,46 @@ public class MainWindow extends Application implements EventHandler<ActionEvent>
         hbAED.getChildren().addAll(btnAdd, btnEdit, btnDelete);
         btnEdit.setId("TableButtons");
 
+        //Big Edit Button
+        Button btnEditBig = new Button("Submit");
 
-        Image imgSearch=new Image("Graphics/Images/search.png");
-        btnSearch=new Button();
+
+        Image imgSearch = new Image("Graphics/Images/search.png");
+        btnSearch = new Button();
         btnSearch.setGraphic(new ImageView(imgSearch));
 
+        EmployeeTable.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                if (event.getClickCount() == 1) {
+                    EorA = "Edit";
+                    System.out.println(EorA);
+                    employee = EmployeeTable.getSelectionModel().getSelectedItem();
+                    txtFirstName.setText(employee.getEmployeeFirstName());
+                    txtFirstName.setDisable(true);
+                    txtLastName.setText(employee.getEmployeeLastName());
+                    txtLastName.setDisable(true);
+                    txtaPhoneNumber.setText(employee.getPhone());
+                    txtaSerialNumbers.setText(employee.getSerialNumbers());
+                    txtaSerialNumbers.setDisable(true);
+                    txtOldPCName.setText(employee.getOldPCName());
+                    txtOldPCName.setDisable(true);
+                    txtNewPCName.setText(employee.getNewPCName());
+                    txtaNotes.setText(employee.getNotes());
+                    btnEdit.setDisable(false);
+
+
+
+
+                }
+
+            }
+        });
 
 
         //HBox for search column
         HBox hbSearch = new HBox(8);
-        hbSearch.getChildren().addAll(lblSearch, txtSearch,btnSearch);
+        hbSearch.getChildren().addAll(lblSearch, txtSearch, btnSearch);
 
         // VBox for Right Side
         VBox vbRightSide = new VBox(10);
@@ -248,15 +291,15 @@ public class MainWindow extends Application implements EventHandler<ActionEvent>
 
         VBox vbCenter = new VBox(10);
         vbCenter.getChildren().addAll(mainGrid, hbSubmitCancel);
-        Label EmployeeInfo=new Label("Bill Information");
+        Label EmployeeInfo = new Label("Bill Information");
 
-        DropShadow dropShadow=new DropShadow();
+        DropShadow dropShadow = new DropShadow();
         dropShadow.setRadius(5.0);
         dropShadow.setOffsetX(3.0);
         dropShadow.setOffsetX(3.0);
         dropShadow.setColor(Color.color(0.4, 0.5, 0.5));
 
-        Text Banner=new Text();
+        Text Banner = new Text();
         Banner.setEffect(dropShadow);
         Banner.setCache(true);
         Banner.setX(10.0);
@@ -290,31 +333,54 @@ public class MainWindow extends Application implements EventHandler<ActionEvent>
     @Override
     public void handle(ActionEvent event) {
         if (event.getSource() == btnAdd) {
+            EorA = "Add";
+            btnEdit.setDisable(true);
+            enableFields();
             clearFields();
+            System.out.println(EorA);
 
         }
-        if (event.getSource() == btnSubmit) {
-            //get the current date
-            SimpleDateFormat formatDate = new SimpleDateFormat("yyyy-MM-dd");
-            Date today = new Date();
-            String todayDate = formatDate.format(today);
+        if (event.getSource() == btnEdit) {
+            EorA = "Edit";
+            Employee employee=new Employee(txtFirstName.getText(),txtLastName.getText(),txtaPhoneNumber.getText(),txtaSerialNumbers.getText(),txtOldPCName.getText(),txtNewPCName.getText(),txtaNotes.getText());
 
-            Employee newEmployee = new Employee(txtFirstName.getText(), txtLastName.getText(), txtaPhoneNumber.getText(), txtaSerialNumbers.getText(), txtOldPCName.getText(), txtNewPCName.getText(), txtaNotes.getText(), todayDate);
-            DBConnector SendToAdd=new DBConnector();
-            try {
-                SendToAdd.Add(newEmployee);
-                DBConnector getMainTable = new DBConnector();
-                EmployeeTable.setItems(getMainTable.GenerateTable());
+            DBConnector editEmployee=new DBConnector();
+            try{
+                editEmployee.Edit(employee);
+                EmployeeTable.setItems(editEmployee.GenerateTable());
+
             }catch (SQLException ex){
                 ex.printStackTrace();
             }
-            txtaNotes.clear();
-            txtaSerialNumbers.clear();
-            txtFirstName.clear();
-            txtLastName.clear();
-            txtOldPCName.clear();
-            txtNewPCName.clear();
-            txtaPhoneNumber.clear();
+
+        }
+        if (event.getSource() == btnSubmit) {
+            if (EorA.equals("Add")) {
+                //get the current date
+                SimpleDateFormat formatDate = new SimpleDateFormat("yyyy-MM-dd");
+                Date today = new Date();
+                String todayDate = formatDate.format(today);
+
+                Employee newEmployee = new Employee(txtFirstName.getText(), txtLastName.getText(), txtaPhoneNumber.getText(), txtaSerialNumbers.getText(), txtOldPCName.getText(), txtNewPCName.getText(), txtaNotes.getText(), todayDate);
+                DBConnector SendToAdd = new DBConnector();
+                try {
+                    SendToAdd.Add(newEmployee);
+                    DBConnector getMainTable = new DBConnector();
+                    EmployeeTable.setItems(getMainTable.GenerateTable());
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+                txtaNotes.clear();
+                txtaSerialNumbers.clear();
+                txtFirstName.clear();
+                txtLastName.clear();
+                txtOldPCName.clear();
+                txtNewPCName.clear();
+                txtaPhoneNumber.clear();
+            }
+            if (EorA.equals("Edit")) {
+
+            }
 
         }
         if (event.getSource() == btnEdit) {
@@ -333,7 +399,18 @@ public class MainWindow extends Application implements EventHandler<ActionEvent>
         txtaNotes.clear();
         txtaPhoneNumber.clear();
         hbSubmitCancel.setVisible(true);
+    }
 
+    public void enableFields() {
+        txtFirstName.setDisable(false);
+        txtOldPCName.setDisable(false);
+        txtLastName.setDisable(false);
+        txtNewPCName.setDisable(false);
+        txtaNotes.setDisable(false);
+        txtaSerialNumbers.setDisable(false);
+        txtaNotes.setDisable(false);
+        txtaPhoneNumber.setDisable(false);
+        hbSubmitCancel.setVisible(true);
 
     }
 }

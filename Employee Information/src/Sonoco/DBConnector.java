@@ -98,7 +98,18 @@ public class DBConnector {
        // System.out.println("INSERT INTO employeeinformation VALUES ('" + newEmployee.getEmployeeFirstName() + "','" + newEmployee.getEmployeeLastName() + "','" + newEmployee.getPhone() + "','" + newEmployee.getSerialNumbers() + "','" + newEmployee.getOldPCName() + "','" + newEmployee.getNewPCName() + "','" + newEmployee.getNotes() + "','" + newEmployee.getDate() + "') ");
        stmt.executeUpdate("INSERT INTO employeeinformation VALUES ('" + newEmployee.getEmployeeFirstName() + "','" + newEmployee.getEmployeeLastName() + "','" + newEmployee.getPhone() + "','" + newEmployee.getSerialNumbers() + "','" + newEmployee.getOldPCName() + "','" + newEmployee.getNewPCName() + "','" + newEmployee.getNotes() + "','" + newEmployee.getDate() + "') ");
         stmt.close();
-        GenerateTable();
+        conn.close();
+
+    }
+    public void Edit(Employee employee)throws SQLException{
+        conn=getConnection();
+
+        Statement stmt;
+        stmt=conn.createStatement();
+        //System.out.println("UPDATE employeeinformation SET PhoneNumber='"+employee.getPhone()+"',SerialNumbers='"+employee.getSerialNumbers()+"',NewPCName='"+employee.getNewPCName()+"',Notes='"+employee.getNotes()+"' WHERE EmployeeLastName='"+employee.getEmployeeLastName()+"' AND SerialNumbers='"+employee.getSerialNumbers()+"';");
+        stmt.executeUpdate("UPDATE employeeinformation SET PhoneNumber='"+employee.getPhone()+"',SerialNumbers='"+employee.getSerialNumbers()+"',NewPCName='"+employee.getNewPCName()+"',Notes='"+employee.getNotes()+"' WHERE EmployeeLastName='"+employee.getEmployeeLastName()+"' AND SerialNumbers='"+employee.getSerialNumbers()+"';");
+        stmt.close();
+        conn.close();
 
     }
 }
