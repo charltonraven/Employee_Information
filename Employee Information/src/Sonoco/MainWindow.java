@@ -232,7 +232,7 @@ public class MainWindow extends Application implements EventHandler<ActionEvent>
             public void handle(MouseEvent event) {
                 if (event.getClickCount() == 1) {
                     EorA = "Edit";
-                    System.out.println(EorA);
+
                     employee = EmployeeTable.getSelectionModel().getSelectedItem();
                     txtFirstName.setText(employee.getEmployeeFirstName());
                     txtFirstName.setDisable(true);
@@ -246,8 +246,6 @@ public class MainWindow extends Application implements EventHandler<ActionEvent>
                     txtNewPCName.setText(employee.getNewPCName());
                     txtaNotes.setText(employee.getNotes());
                     btnEdit.setDisable(false);
-
-
 
 
                 }
@@ -338,19 +336,18 @@ public class MainWindow extends Application implements EventHandler<ActionEvent>
             btnEdit.setDisable(true);
             enableFields();
             clearFields();
-            System.out.println(EorA);
+
 
         }
         if (event.getSource() == btnEdit) {
             EorA = "Edit";
-            Employee employee=new Employee(txtFirstName.getText(),txtLastName.getText(),txtaPhoneNumber.getText(),txtaSerialNumbers.getText(),txtOldPCName.getText(),txtNewPCName.getText(),txtaNotes.getText());
+            Employee employee = new Employee(txtFirstName.getText(), txtLastName.getText(), txtaPhoneNumber.getText(), txtaSerialNumbers.getText(), txtOldPCName.getText(), txtNewPCName.getText(), txtaNotes.getText());
 
-            DBConnector editEmployee=new DBConnector();
-            try{
-                editEmployee.Edit(employee);
-                EmployeeTable.setItems(editEmployee.GenerateTable());
+            DBConnector editEmployee = new DBConnector();
+            try {
+                EmployeeTable.setItems(editEmployee.edit(employee));
 
-            }catch (SQLException ex){
+            } catch (SQLException ex) {
                 ex.printStackTrace();
             }
 
@@ -365,32 +362,23 @@ public class MainWindow extends Application implements EventHandler<ActionEvent>
                 Employee newEmployee = new Employee(txtFirstName.getText(), txtLastName.getText(), txtaPhoneNumber.getText(), txtaSerialNumbers.getText(), txtOldPCName.getText(), txtNewPCName.getText(), txtaNotes.getText(), todayDate);
                 DBConnector SendToAdd = new DBConnector();
                 try {
-                    SendToAdd.Add(newEmployee);
-                    DBConnector getMainTable = new DBConnector();
-                    EmployeeTable.setItems(getMainTable.GenerateTable());
+                    EmployeeTable.setItems(SendToAdd.Add(newEmployee));
                 } catch (SQLException ex) {
                     ex.printStackTrace();
                 }
-                txtaNotes.clear();
-                txtaSerialNumbers.clear();
-                txtFirstName.clear();
-                txtLastName.clear();
-                txtOldPCName.clear();
-                txtNewPCName.clear();
-                txtaPhoneNumber.clear();
+
             }
 
         }
         if (event.getSource() == btnDelete) {
 
             Employee Demployee = new Employee(txtFirstName.getText(), txtLastName.getText(), txtaPhoneNumber.getText(), txtaSerialNumbers.getText(), txtOldPCName.getText(), txtNewPCName.getText(), txtaNotes.getText());
-            DBConnector deleteEmployee=new DBConnector();
+            DBConnector deleteEmployee = new DBConnector();
             try {
-                deleteEmployee.delete(Demployee);
-                EmployeeTable.setItems(deleteEmployee.GenerateTable());
 
+                EmployeeTable.setItems(deleteEmployee.delete(Demployee));
                 clearFields();
-            }catch (SQLException ex){
+            } catch (SQLException ex) {
                 ex.printStackTrace();
             }
 
@@ -398,7 +386,7 @@ public class MainWindow extends Application implements EventHandler<ActionEvent>
     }
 
     public void clearFields() {
-        txtFirstName.setText("Enter new information");
+        txtFirstName.clear();
         txtOldPCName.clear();
         txtLastName.clear();
         txtNewPCName.clear();

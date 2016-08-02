@@ -1,10 +1,6 @@
 package Sonoco;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 
 import javax.sql.DataSource;
 
@@ -15,15 +11,20 @@ import javafx.collections.ObservableList;
 public class DBConnector {
 
     private static Connection conn;
+    PreparedStatement AddEmployee = null;
+    PreparedStatement EditEmployee = null;
+    PreparedStatement DeleteEmployee = null;
+    String url = "jdbc:mysql://oldbrainbox:3306/employeeinfo";
+    String user = "root";
+    String password = "Raven47946$";
+
 
     public DBConnector() {
         this.conn = null;
     }
 
     public Connection getConn() {
-        String url = "jdbc:mysql://oldbrainbox:3306/employeeinfo";
-        String user = "root";
-        String password = "Raven47946$";
+
 
         try {
             Class.forName("com.mysql.jdbc.Driver");
@@ -42,9 +43,6 @@ public class DBConnector {
     }
 
     public Connection getConnection() {
-        String url = "jdbc:mysql://oldbrainbox:3306/employeeinfo";
-        String user = "root";
-        String password = "Raven47946$";
 
         try {
             Class.forName("com.mysql.jdbc.Driver");
@@ -62,13 +60,12 @@ public class DBConnector {
 
     public ObservableList<Employee> GenerateTable() throws SQLException {
         ObservableList<Employee> employee = FXCollections.observableArrayList();
-        DBConnector start = new DBConnector();
-        conn = start.getConn();
 
+        conn = DriverManager.getConnection(url, user, password);
         ResultSet rs = null;
-        Statement stmt = null;
-        stmt = conn.createStatement();
-        rs = stmt.executeQuery("Select * from employeeinformation");
+        String getAllstmt = "Select * from employeeinformation";
+        PreparedStatement getTables = conn.prepareStatement(getAllstmt);
+        rs = getTables.executeQuery();
 
         while (rs.next()) {
             String First = rs.getString("EmployeeFirstName");
@@ -82,49 +79,125 @@ public class DBConnector {
 
             employee.add(new Employee(First, Last, Phone, Serial, OldPC, newPC, Notes, Date));
         }
-        stmt.close();
+
+        rs.close();
         conn.close();
 
         return employee;
 
     }
 
-    public void Add(Employee newEmployee) throws SQLException {
-        if(conn==null){
-            conn=getConnection();
+    public ObservableList<Employee> Add(Employee newEmployee) throws SQLException {
+        if (conn == null) {
+            conn = getConnection();
         }
 
 
-        Statement stmt;
-        stmt = conn.createStatement();
-       // System.out.println("INSERT INTO employeeinformation VALUES ('" + newEmployee.getEmployeeFirstName() + "','" + newEmployee.getEmployeeLastName() + "','" + newEmployee.getPhone() + "','" + newEmployee.getSerialNumbers() + "','" + newEmployee.getOldPCName() + "','" + newEmployee.getNewPCName() + "','" + newEmployee.getNotes() + "','" + newEmployee.getDate() + "') ");
-       stmt.executeUpdate("INSERT INTO employeeinformation VALUES ('" + newEmployee.getEmployeeFirstName() + "','" + newEmployee.getEmployeeLastName() + "','" + newEmployee.getPhone() + "','" + newEmployee.getSerialNumbers() + "','" + newEmployee.getOldPCName() + "','" + newEmployee.getNewPCName() + "','" + newEmployee.getNotes() + "','" + newEmployee.getDate() + "') ");
-        stmt.close();
-        conn.close();
+        String stmt = "INSERT INTO employeeinformation VALUES ('" + newEmployee.getEmployeeFirstName() + "','" + newEmployee.getEmployeeLastName() + "','" + newEmployee.getPhone() + "','" + newEmployee.getSerialNumbers() + "','" + newEmployee.getOldPCName() + "','" + newEmployee.getNewPCName() + "','" + newEmployee.getNotes() + "','" + newEmployee.getDate() + "') ";
+        AddEmployee = conn.prepareStatement(stmt);
+        AddEmployee.execute();
 
-    }
-    public void Edit(Employee employee)throws SQLException{
-        if(conn==null){
-            conn=getConnection();
+        ObservableList<Employee> employee = FXCollections.observableArrayList();
+
+        ResultSet rs = null;
+        String getAllstmt = "Select * from employeeinformation";
+        PreparedStatement getTables = conn.prepareStatement(getAllstmt);
+        rs = getTables.executeQuery();
+
+        while (rs.next()) {
+            String First = rs.getString("EmployeeFirstName");
+            String Last = rs.getString("EmployeeLastName");
+            String Phone = rs.getString("PhoneNumber");
+            String Serial = rs.getString("SerialNumbers");
+            String OldPC = rs.getString("OldPCName");
+            String newPC = rs.getString("NewPCName");
+            String Notes = rs.getString("Notes");
+            String Date = rs.getString("Date");
+
+            employee.add(new Employee(First, Last, Phone, Serial, OldPC, newPC, Notes, Date));
         }
 
-        Statement stmt;
-        stmt=conn.createStatement();
-        //System.out.println("UPDATE employeeinformation SET PhoneNumber='"+employee.getPhone()+"',SerialNumbers='"+employee.getSerialNumbers()+"',NewPCName='"+employee.getNewPCName()+"',Notes='"+employee.getNotes()+"' WHERE EmployeeLastName='"+employee.getEmployeeLastName()+"' AND SerialNumbers='"+employee.getSerialNumbers()+"';");
-        stmt.executeUpdate("UPDATE employeeinformation SET PhoneNumber='"+employee.getPhone()+"',SerialNumbers='"+employee.getSerialNumbers()+"',NewPCName='"+employee.getNewPCName()+"',Notes='"+employee.getNotes()+"' WHERE EmployeeLastName='"+employee.getEmployeeLastName()+"' AND SerialNumbers='"+employee.getSerialNumbers()+"';");
-        stmt.close();
+        rs.close();
         conn.close();
 
+        return employee;
+
     }
-    public void delete(Employee employee)throws SQLException{
-        if(conn==null){
-            conn=getConnection();
+
+    public ObservableList<Employee> edit(Employee ObservedEmployee) throws SQLException {
+        if (conn == null) {
+            conn = getConnection();
         }
 
-        Statement stmt;
-        stmt=conn.createStatement();
-        stmt.executeUpdate("DELETE FROM employeeinformation WHERE EmployeeLastName='"+employee.getEmployeeLastName()+"' AND SerialNumbers='"+employee.getSerialNumbers()+"';");
-        stmt.close();
+
+        String stmt = "UPDATE employeeinformation SET PhoneNumber='" + ObservedEmployee.getPhone() + "',SerialNumbers='" + ObservedEmployee.getSerialNumbers() + "',NewPCName='" + ObservedEmployee.getNewPCName() + "',Notes='" + ObservedEmployee.getNotes() + "' WHERE EmployeeLastName='" + ObservedEmployee.getEmployeeLastName() + "' AND SerialNumbers='" + ObservedEmployee.getSerialNumbers() + "';";
+        EditEmployee = conn.prepareStatement(stmt);
+        EditEmployee.execute();
+
+
+        ObservableList<Employee> employee = FXCollections.observableArrayList();
+        ResultSet rs = null;
+        String getAllstmt = "Select * from employeeinformation";
+        PreparedStatement getTables = conn.prepareStatement(getAllstmt);
+        rs = getTables.executeQuery();
+
+        while (rs.next()) {
+            String First = rs.getString("EmployeeFirstName");
+            String Last = rs.getString("EmployeeLastName");
+            String Phone = rs.getString("PhoneNumber");
+            String Serial = rs.getString("SerialNumbers");
+            String OldPC = rs.getString("OldPCName");
+            String newPC = rs.getString("NewPCName");
+            String Notes = rs.getString("Notes");
+            String Date = rs.getString("Date");
+
+            employee.add(new Employee(First, Last, Phone, Serial, OldPC, newPC, Notes, Date));
+        }
+
+        rs.close();
         conn.close();
+
+        return employee;
+
     }
+
+    public ObservableList<Employee> delete(Employee ObservedEmployee) throws SQLException {
+        if (conn == null) {
+            conn = getConnection();
+        }
+        String stmt = "DELETE FROM employeeinformation WHERE EmployeeLastName='" + ObservedEmployee.getEmployeeLastName() + "' AND SerialNumbers='" + ObservedEmployee.getSerialNumbers() + "';";
+        DeleteEmployee = conn.prepareStatement(stmt);
+
+        DeleteEmployee.execute();
+
+        ObservableList<Employee> employee = FXCollections.observableArrayList();
+
+        ResultSet rs = null;
+        String getAllstmt = "Select * from employeeinformation";
+        PreparedStatement getTables = conn.prepareStatement(getAllstmt);
+        rs = getTables.executeQuery();
+
+        while (rs.next()) {
+            String First = rs.getString("EmployeeFirstName");
+            String Last = rs.getString("EmployeeLastName");
+            String Phone = rs.getString("PhoneNumber");
+            String Serial = rs.getString("SerialNumbers");
+            String OldPC = rs.getString("OldPCName");
+            String newPC = rs.getString("NewPCName");
+            String Notes = rs.getString("Notes");
+            String Date = rs.getString("Date");
+
+            employee.add(new Employee(First, Last, Phone, Serial, OldPC, newPC, Notes, Date));
+        }
+
+        rs.close();
+        conn.close();
+
+        return employee;
+    }
+    public ObservableList<Employee> Search(Employee ObservedEmployee) throws SQLException {
+
+        return null;
+    }
+
 }
