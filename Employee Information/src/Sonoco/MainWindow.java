@@ -287,6 +287,7 @@ public class MainWindow extends Application implements EventHandler<ActionEvent>
         mainGrid.add(txtaNotes, 1, 6);
 
         mainGrid.setAlignment(Pos.TOP_CENTER);
+        btnDelete.setOnAction(this);
 
 
         VBox vbCenter = new VBox(10);
@@ -378,13 +379,20 @@ public class MainWindow extends Application implements EventHandler<ActionEvent>
                 txtNewPCName.clear();
                 txtaPhoneNumber.clear();
             }
-            if (EorA.equals("Edit")) {
-
-            }
 
         }
-        if (event.getSource() == btnEdit) {
+        if (event.getSource() == btnDelete) {
 
+            Employee Demployee = new Employee(txtFirstName.getText(), txtLastName.getText(), txtaPhoneNumber.getText(), txtaSerialNumbers.getText(), txtOldPCName.getText(), txtNewPCName.getText(), txtaNotes.getText());
+            DBConnector deleteEmployee=new DBConnector();
+            try {
+                deleteEmployee.delete(Demployee);
+                EmployeeTable.setItems(deleteEmployee.GenerateTable());
+
+                clearFields();
+            }catch (SQLException ex){
+                ex.printStackTrace();
+            }
 
         }
     }

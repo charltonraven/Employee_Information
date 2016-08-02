@@ -90,7 +90,9 @@ public class DBConnector {
     }
 
     public void Add(Employee newEmployee) throws SQLException {
-        conn = getConnection();
+        if(conn==null){
+            conn=getConnection();
+        }
 
 
         Statement stmt;
@@ -102,7 +104,9 @@ public class DBConnector {
 
     }
     public void Edit(Employee employee)throws SQLException{
-        conn=getConnection();
+        if(conn==null){
+            conn=getConnection();
+        }
 
         Statement stmt;
         stmt=conn.createStatement();
@@ -111,5 +115,16 @@ public class DBConnector {
         stmt.close();
         conn.close();
 
+    }
+    public void delete(Employee employee)throws SQLException{
+        if(conn==null){
+            conn=getConnection();
+        }
+
+        Statement stmt;
+        stmt=conn.createStatement();
+        stmt.executeUpdate("DELETE FROM employeeinformation WHERE EmployeeLastName='"+employee.getEmployeeLastName()+"' AND SerialNumbers='"+employee.getSerialNumbers()+"';");
+        stmt.close();
+        conn.close();
     }
 }
